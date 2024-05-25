@@ -163,6 +163,16 @@
                         "test",
                         "-Dtest=ABBTests#stress"
                     ]
+                },
+                {
+                    "name": "test eliminar_unico_elemento",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#eliminar_unico_elemento"
+                    ]
                 }
             ]
         }

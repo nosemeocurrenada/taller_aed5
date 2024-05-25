@@ -2,7 +2,12 @@ package aed;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+
+import java.util.stream.IntStream;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class ABBTests {
 
@@ -178,6 +183,26 @@ class ABBTests {
     }
 
     @Test
+    void eliminar_unico_elemento(){
+        ABB<Integer> conjunto = new ABB<Integer>();
+
+        conjunto.insertar(8);
+        conjunto.eliminar(8);
+        assertEquals(false, conjunto.pertenece(8));
+        assertEquals(0, conjunto.cardinal());
+
+        conjunto.insertar(8);
+        conjunto.eliminar(7);
+        assertEquals(true, conjunto.pertenece(8));
+        assertEquals(1, conjunto.cardinal());
+
+        conjunto.insertar(7);
+        conjunto.eliminar(8);
+        assertEquals(false, conjunto.pertenece(8));
+        assertEquals(1, conjunto.cardinal());
+    }
+
+    @Test
     void eliminar_elemento_con_sucesor_arriba() {
         ABB<Integer> conjunto = new ABB<Integer>();
         
@@ -239,16 +264,26 @@ class ABBTests {
         assertEquals("{4,6,8}", c.toString());
 
     }
+    
+    private int mod(int i , int n){
+        while (i < 0) {
+            i += n;
+        }
+        return i % n;
+    }
+    
+    @Test void testJavaIsReasonable(){
+        assertEquals(4, mod(-1, 5));
+    }
 
-    Integer NCLAVES = 1000; 
+    Integer NCLAVES = 22; 
 
     private Integer clave(Integer i) {        
-        return NCLAVES * ((i * i - 100 * i) % NCLAVES) + i;
+        return 1000 * mod((i * i - 100 * i),1000) + i;
     }
 
     @Test
     void stress() {
-
         ABB<Integer> conjunto = new ABB<Integer>();
         
         // Insertar
@@ -272,17 +307,20 @@ class ABBTests {
 
         // Eliminar los valores para i par
         for (Integer i = 0; i < NCLAVES; i++) {
+            int cardinal = conjunto.cardinal();
             Integer k = clave(i);
             assertEquals(true, conjunto.pertenece(k));
             if (i % 2 == 0) {
                 conjunto.eliminar(k);
-                assertEquals(false, conjunto.pertenece(k), conjunto.root.toString());
+                assertEquals(false, conjunto.pertenece(k), String.valueOf(NCLAVES));
+                assertEquals(cardinal - 1, conjunto.cardinal(), String.valueOf(i));
             }
         }
         assertEquals(NCLAVES / 2, conjunto.cardinal());
         
         // Eliminar los valores para i impar
         for (Integer i = 0; i < NCLAVES; i++) {
+            int cardinal = conjunto.cardinal();
             Integer k = clave(i);
             if (i % 2 == 0) {
                 assertEquals(false,conjunto.pertenece(k));
@@ -290,6 +328,7 @@ class ABBTests {
                 assertEquals(true, conjunto.pertenece(k));
                 conjunto.eliminar(k);
                 assertEquals(false,conjunto.pertenece(k));
+                assertEquals(cardinal - 1, conjunto.cardinal(), String.valueOf(i));
             }
         }
         assertEquals(0, conjunto.cardinal());

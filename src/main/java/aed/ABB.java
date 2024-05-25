@@ -10,7 +10,6 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         T data;
         public Nodo(T data, Nodo parent){
             this.data = data;
-            this.parent = parent;
         }
 
         @Override
@@ -31,6 +30,19 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
     }
     Nodo root;
+
+    private void enlazar_izq(Nodo p, Nodo l){
+        p.prev = l;
+        if(l != null){
+            l.parent = p;
+        }
+    }
+    private void enlazar_der(Nodo p, Nodo r){
+        p.next = r;
+        if(r != null){
+            r.parent = p;
+        }
+    }
 
     private int cardinal(Nodo n){
         if (n == null){
@@ -64,7 +76,8 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
 
         if(res >  0){
             if(n.next == null){
-                n.next = new Nodo(elem, n);
+                Nodo r = new Nodo(elem, n);
+                enlazar_der(n, r);
             } else {
                 insertar(n.next, elem);
             }
@@ -72,7 +85,8 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
         
         if(n.prev == null){
-            n.prev = new Nodo(elem, n);
+            Nodo l = new Nodo(elem, n);
+            enlazar_izq(n, l);
         } else{
             insertar(n.prev, elem);
         }
@@ -92,43 +106,45 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         return maximo(n.next);
     }
 
+    Nodo sucesor(Nodo n){
+        if(n == null) return null;
+        if(n.next != null){
+            return minimo(n.next);
+        }
+
+        while(n.parent != null && n.parent.prev != n){
+            n = n.parent;
+        }
+
+        return n.parent;
+    }
+
+    private boolean es_nodo_simple(Nodo n){
+        return n.next == null || n.prev == null;
+    }
+
+    private void eliminar_nodo_simple(Nodo n){
+        Nodo progenitor = n.parent;
+        n.parent = null;
+        Nodo cria = n.next != null ? n.next : n.prev;
+        if(progenitor == null){
+            root = cria;
+            if(cria != null){
+                cria.parent = null;
+            }
+        } else if(progenitor.next == n){
+            enlazar_der(progenitor, cria);
+        } else if(progenitor.prev == n){
+            enlazar_izq(progenitor, cria);
+        }
+    }
+
     private void eliminar(Nodo n, T elem){
         int res = elem.compareTo(n.data);
         
         if(res ==  0){
-            if(n.next == null && n.prev == null){
-                Nodo m = n.parent;
-                n.parent = null;
-                if(m.next == n){
-                    m.next = null;
-                }
-                if(m.prev == n){
-                    m.prev = null;
-                }
-                return;
-            }
-
-            if(n.prev == null){
-                Nodo m = n.parent;
-                n.parent = null;
-                if(m.next == n){
-                    m.next = n.next;
-                }
-                if(m.prev == n){
-                    m.prev = n.next;
-                }
-                return;
-            }
-
-            if(n.next == null){
-                Nodo m = n.parent;
-                n.parent = null;
-                if(m.next == n){
-                    m.next = n.prev;
-                }
-                if(m.prev == n){
-                    m.prev = n.prev;
-                }
+            if(es_nodo_simple(n)){
+                eliminar_nodo_simple(n);
                 return;
             }
 
@@ -195,20 +211,6 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
             list.add(String.valueOf(it.siguiente()));
         }
         return "{" + String.join(",", list) + "}";
-    }
-
-
-    Nodo sucesor(Nodo n){
-        if(n == null) return null;
-        if(n.next != null){
-            return minimo(n.next);
-        }
-
-        while(n.parent != null && n.parent.prev != n){
-            n = n.parent;
-        }
-
-        return n.parent;
     }
 
     private class ABB_Iterador implements Iterador<T> {
