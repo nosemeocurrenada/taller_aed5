@@ -21,13 +21,13 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
 
         private String repr(Nodo n, List<Nodo> visited){
             if (n == null){
-                return "";
+                return "null";
             }
             if (visited.contains(n)){
-                return String.format("<%d:REC>", n.data);
+                return String.format("{\"value\":%d,\"recursion\":true}", n.data);
             }
             visited.add(n);
-            return String.format("<%d:%s:%s>", n.data, repr(n.prev, visited), repr(n.next, visited));
+            return String.format("{\"value\":\"%d\",\"left\":%s,\"right\":%s}", n.data, repr(n.prev, visited), repr(n.next, visited));
         }
     }
     Nodo root;

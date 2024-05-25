@@ -276,7 +276,7 @@ class ABBTests {
             assertEquals(true, conjunto.pertenece(k));
             if (i % 2 == 0) {
                 conjunto.eliminar(k);
-                assertEquals(false, conjunto.pertenece(k));
+                assertEquals(false, conjunto.pertenece(k), conjunto.root.toString());
             }
         }
         assertEquals(NCLAVES / 2, conjunto.cardinal());
