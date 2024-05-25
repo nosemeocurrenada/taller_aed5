@@ -1,9 +1,5 @@
 package aed;
 
-import java.util.*;
-
-// Todos los tipos de datos "Comparables" tienen el método compareTo()
-// elem1.compareTo(elem2) devuelve un entero. Si es mayor a 0, entonces elem1 > elem2
 public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     private class Nodo {
         Nodo der, izq, progenitor;
@@ -12,7 +8,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
             this.data = data;
         }
     }
-    Nodo root;
+    Nodo raiz;
 
     private void enlazar_izq(Nodo p, Nodo l){
         p.izq = l;
@@ -111,7 +107,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         n.progenitor = null;
         Nodo cria = n.der != null ? n.der : n.izq;
         if(progenitor == null){
-            root = cria;
+            raiz = cria;
             if(cria != null){
                 cria.progenitor = null;
             }
@@ -153,45 +149,50 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public int cardinal() {
-        return cardinal(root);
+        return cardinal(raiz);
     }
 
     public T minimo(){
-        return minimo(root).data;
+        return minimo(raiz).data;
     }
 
     public T maximo(){
-        return maximo(root).data;
+        return maximo(raiz).data;
     }
 
     public void insertar(T elem){
-        if(root == null){
-            root = new Nodo(elem);
+        if(raiz == null){
+            raiz = new Nodo(elem);
             return;
         }
-        insertar(root, elem);
+        insertar(raiz, elem);
     }
 
     public boolean pertenece(T elem){
-        return pertenece(root, elem);
+        return pertenece(raiz, elem);
     }
 
     public void eliminar(T elem){
-        eliminar(root, elem);
+        eliminar(raiz, elem);
     }
 
     @Override
     public String toString(){
-        ArrayList<String> list = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
         Iterador<T> it = iterador();
-        while(it.haySiguiente()){
-            list.add(String.valueOf(it.siguiente()));
+        
+        sb.append("{");
+        if (it.haySiguiente()){
+            sb.append(it.siguiente());
         }
-        return "{" + String.join(",", list) + "}";
+        while(it.haySiguiente()){
+            sb.append(",").append(it.siguiente());
+        }
+        return sb.append("}").toString();
     }
 
     private class ABB_Iterador implements Iterador<T> {
-        private Nodo _actual = minimo(root);
+        private Nodo _actual = minimo(raiz);
 
         public boolean haySiguiente() {
             return _actual != null;
