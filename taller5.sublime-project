@@ -1,11 +1,11 @@
 {
-	"folders":
-	[
-		{
-			"path": "."
-		}
-	],
-	"build_systems":
+    "folders":
+    [
+        {
+            "path": "."
+        }
+    ],
+    "build_systems":
     [
         {
             "name": "project_maven",
@@ -32,6 +32,136 @@
                         "--batch-mode",
                         "test",
                         "-Dtest=ABBTests#nuevo_conjunto_vacio"
+                    ]
+                },
+                {
+                    "name": "test insertar_un_elemento",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#insertar_un_elemento"
+                    ]
+                },
+                {
+                    "name": "test insertar_cinco_enteros",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#insertar_cinco_enteros"
+                    ]
+                },
+                {
+                    "name": "test insertar_cinco_nombres",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#insertar_cinco_nombres"
+                    ]
+                },
+                {
+                    "name": "test eliminar_elemento_sin_descendientes",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#eliminar_elemento_sin_descendientes"
+                    ]
+                },
+                {
+                    "name": "test eliminar_elemento_con_un_descendiente",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#eliminar_elemento_con_un_descendiente"
+                    ]
+                },
+                {
+                    "name": "test eliminar_elemento_con_dos_descendientes",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#eliminar_elemento_con_dos_descendientes"
+                    ]
+                },
+                {
+                    "name": "test eliminar_raiz",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#eliminar_raiz"
+                    ]
+                },
+                {
+                    "name": "test eliminar_elemento_con_doble_descendencia",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#eliminar_elemento_con_doble_descendencia"
+                    ]
+                },
+                {
+                    "name": "test eliminar_elemento_con_sucesor_raiz",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#eliminar_elemento_con_sucesor_raiz"
+                    ]
+                },
+                {
+                    "name": "test eliminar_elemento_con_sucesor_arriba",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#eliminar_elemento_con_sucesor_arriba"
+                    ]
+                },
+                {
+                    "name": "test siguiente_inorder",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#siguiente_inorder"
+                    ]
+                },
+                {
+                    "name": "test testToString",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#testToString"
+                    ]
+                },
+                {
+                    "name": "test stress",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#stress"
                     ]
                 }
             ]
