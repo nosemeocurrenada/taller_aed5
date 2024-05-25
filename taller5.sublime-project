@@ -1,0 +1,40 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+	"build_systems":
+    [
+        {
+            "name": "project_maven",
+            "keyfiles": "pom.xml",
+            "file_regex": "^\\[ERROR\\]\\s+([^:]*):\\[?(\\d+),?(\\d+)?\\]? (.*)$",
+            "working_dir": "$folder",
+            "variants":
+            [
+                {
+                    "name": "test ALL",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests"
+                    ]
+                },
+                {
+                    "name": "test nuevo_conjunto_vacio",
+                    "cmd":
+                    [
+                        "mvn",
+                        "--batch-mode",
+                        "test",
+                        "-Dtest=ABBTests#nuevo_conjunto_vacio"
+                    ]
+                }
+            ]
+        }
+    ]
+}
