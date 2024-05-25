@@ -5,42 +5,25 @@ import java.util.*;
 // Todos los tipos de datos "Comparables" tienen el método compareTo()
 // elem1.compareTo(elem2) devuelve un entero. Si es mayor a 0, entonces elem1 > elem2
 public class ABB<T extends Comparable<T>> implements Conjunto<T> {
-    public class Nodo {
-        Nodo next, prev, parent;
+    private class Nodo {
+        Nodo der, izq, progenitor;
         T data;
-        public Nodo(T data, Nodo parent){
+        public Nodo(T data){
             this.data = data;
-        }
-
-        @Override
-        public String toString() {
-            ArrayList<Nodo> visited = new ArrayList<Nodo>();
-            return repr(this, visited);
-        }
-
-        private String repr(Nodo n, List<Nodo> visited){
-            if (n == null){
-                return "null";
-            }
-            if (visited.contains(n)){
-                return String.format("{\"value\":%d,\"recursion\":true}", n.data);
-            }
-            visited.add(n);
-            return String.format("{\"value\":\"%d\",\"left\":%s,\"right\":%s}", n.data, repr(n.prev, visited), repr(n.next, visited));
         }
     }
     Nodo root;
 
     private void enlazar_izq(Nodo p, Nodo l){
-        p.prev = l;
+        p.izq = l;
         if(l != null){
-            l.parent = p;
+            l.progenitor = p;
         }
     }
     private void enlazar_der(Nodo p, Nodo r){
-        p.next = r;
+        p.der = r;
         if(r != null){
-            r.parent = p;
+            r.progenitor = p;
         }
     }
 
@@ -48,7 +31,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         if (n == null){
             return 0;
         }
-        return 1 + cardinal(n.next) + cardinal(n.prev);
+        return 1 + cardinal(n.der) + cardinal(n.izq);
     }
 
     private boolean pertenece(Nodo n, T elem){
@@ -61,10 +44,10 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
 
         if(res >  0){
-            return pertenece(n.next, elem);
+            return pertenece(n.der, elem);
         }
         
-        return pertenece(n.prev, elem);
+        return pertenece(n.izq, elem);
     }
 
     private void insertar(Nodo n, T elem){
@@ -75,66 +58,66 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
 
         if(res >  0){
-            if(n.next == null){
-                Nodo r = new Nodo(elem, n);
+            if(n.der == null){
+                Nodo r = new Nodo(elem);
                 enlazar_der(n, r);
             } else {
-                insertar(n.next, elem);
+                insertar(n.der, elem);
             }
             return;
         }
         
-        if(n.prev == null){
-            Nodo l = new Nodo(elem, n);
+        if(n.izq == null){
+            Nodo l = new Nodo(elem);
             enlazar_izq(n, l);
         } else{
-            insertar(n.prev, elem);
+            insertar(n.izq, elem);
         }
     }
 
     private Nodo minimo(Nodo n){
-        if (n.prev == null){
+        if (n.izq == null){
             return n;
         }
-        return minimo(n.prev);
+        return minimo(n.izq);
     }
 
     private Nodo maximo(Nodo n){
-        if (n.next == null){
+        if (n.der == null){
             return n;
         }
-        return maximo(n.next);
+        return maximo(n.der);
     }
 
     Nodo sucesor(Nodo n){
         if(n == null) return null;
-        if(n.next != null){
-            return minimo(n.next);
+        if(n.der != null){
+            return minimo(n.der);
         }
 
-        while(n.parent != null && n.parent.prev != n){
-            n = n.parent;
+        while(n.progenitor != null && n.progenitor.izq != n){
+            n = n.progenitor;
         }
 
-        return n.parent;
+        return n.progenitor;
     }
 
     private boolean es_nodo_simple(Nodo n){
-        return n.next == null || n.prev == null;
+        return n.der == null || n.izq == null;
     }
 
     private void eliminar_nodo_simple(Nodo n){
-        Nodo progenitor = n.parent;
-        n.parent = null;
-        Nodo cria = n.next != null ? n.next : n.prev;
+        Nodo progenitor = n.progenitor;
+        n.progenitor = null;
+        Nodo cria = n.der != null ? n.der : n.izq;
         if(progenitor == null){
             root = cria;
             if(cria != null){
-                cria.parent = null;
+                cria.progenitor = null;
             }
-        } else if(progenitor.next == n){
+        } else if(progenitor.der == n){
             enlazar_der(progenitor, cria);
-        } else if(progenitor.prev == n){
+        } else if(progenitor.izq == n){
             enlazar_izq(progenitor, cria);
         }
     }
@@ -148,22 +131,22 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                 return;
             }
 
-            Nodo min = minimo(n.next);
+            Nodo min = minimo(n.der);
             n.data = min.data;
             eliminar_nodo_simple(min);
         }
 
         if(res >  0){
-            if(n.next == null){
+            if(n.der == null){
                 return;
             }
-            eliminar(n.next, elem);
+            eliminar(n.der, elem);
         }
 
-        if(n.prev == null){
+        if(n.izq == null){
             return;
         }
-        eliminar(n.prev, elem);
+        eliminar(n.izq, elem);
     }
 
     public ABB() {
@@ -183,7 +166,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
 
     public void insertar(T elem){
         if(root == null){
-            root = new Nodo(elem, null);
+            root = new Nodo(elem);
             return;
         }
         insertar(root, elem);
