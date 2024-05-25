@@ -150,13 +150,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
 
             Nodo min = minimo(n.next);
             n.data = min.data;
-            Nodo m = min.parent;
-            min.parent = null;
-            if(m.prev == min){
-                m.prev = null;
-            } else if(m.next == min){
-                m.next = null;
-            }
+            eliminar_nodo_simple(min);
         }
 
         if(res >  0){

@@ -275,8 +275,22 @@ class ABBTests {
     @Test void testJavaIsReasonable(){
         assertEquals(4, mod(-1, 5));
     }
+    
+    @Test void testEliminarDos(){
+        ABB<Integer> conjunto = new ABB<>();
+        conjunto.insertar(7);
+        conjunto.insertar(6);
+        conjunto.insertar(2);
+        conjunto.insertar(3);
+        conjunto.insertar(5);
+        conjunto.insertar(4);
+        conjunto.insertar(1);
+        assertEquals(7, conjunto.cardinal());
+        conjunto.eliminar(2);
+        assertEquals(6, conjunto.cardinal());
+    }
 
-    Integer NCLAVES = 22; 
+    Integer NCLAVES = 1000; 
 
     private Integer clave(Integer i) {        
         return 1000 * mod((i * i - 100 * i),1000) + i;
